@@ -1,0 +1,12 @@
+{
+  "version": 2,
+  "dgSpecHash": "F4pIbydf5W0=",
+  "success": true,
+  "projectFilePath": "C:\\repos\\puff\\lang\\Puff.Lang\\Puff.Lang.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\Dan Mitreanu\\.nuget\\packages\\libllvm\\20.1.2\\libllvm.20.1.2.nupkg.sha512",
+    "C:\\Users\\Dan Mitreanu\\.nuget\\packages\\llvmsharp\\20.1.2\\llvmsharp.20.1.2.nupkg.sha512",
+    "C:\\Users\\Dan Mitreanu\\.nuget\\packages\\llvmsharp.interop\\20.1.2\\llvmsharp.interop.20.1.2.nupkg.sha512"
+  ],
+  "logs": []
+}
