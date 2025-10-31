@@ -1,5 +1,3 @@
-using System.Diagnostics.CodeAnalysis;
-
 namespace Puff.Lang;
 
 public enum TokenType
@@ -8,6 +6,7 @@ public enum TokenType
     NumberDecimal,
     NumberHex,
     NumberBinary,
+    NumberFloating,
     Comma,
     Dot,
     Colon,
@@ -55,7 +54,7 @@ public static class TokenTools
     public static bool IsNumberChar(char c) => char.IsAsciiDigit(c);
     public static bool IsHexNumberChar(char c) => char.IsAsciiHexDigit(c);
     public static bool IsBinaryNumberChar(char c) => c == '0' || c == '1';
-    public static bool IsBaseNumberChar(char c, out TokenType numberTokenType)
+    public static bool IsNumberBaseChar(char c, out TokenType numberTokenType)
     {
         numberTokenType = TokenType.NumberDecimal;
         switch (c)

@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("Puff.Lang")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+3159dd4b32ecfd45c3570e533e96f6b0ad26432e")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+370893f50d4a176f1c5137a748dddc9b5de363e9")]
 [assembly: System.Reflection.AssemblyProductAttribute("Puff.Lang")]
 [assembly: System.Reflection.AssemblyTitleAttribute("Puff.Lang")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

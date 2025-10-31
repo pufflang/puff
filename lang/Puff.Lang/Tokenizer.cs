@@ -2,20 +2,47 @@
 
 namespace Puff.Lang;
 
-public static class Tokenizer
+public record TokenizerError(string File, string Error, int Line, int Column);
+
+public class Tokenizer
 {
-    public static List<Token> Parse(string text)
+    private readonly List<TokenizerError> _errors = [];
+    private string _currentFile = "(null)";
+    private int _currentLine;
+    private int _currentColumn;
+
+    public bool Parse(string text, string filename, out List<Token> tokens)
     {
-        List<Token> tokens = [];
+        tokens = [];
+        _currentFile = filename;
+        _errors.Clear();
+        _currentLine = 1;
+        _currentColumn = 0;
+
         List<char> buffer = [];
 
-        bool tokenMode = false;
+        bool nextLine = false;
 
+        bool tokenMode = false;
         List<Token> possibleTokens = [];
         foreach (char c in text.Append(' '))
         {
+            _currentColumn++;
+
+            if (nextLine)
+            {
+                _currentLine++;
+                _currentColumn = 0;
+                nextLine = false;
+            }
+
             possibleTokens.Clear();
             Token? token;
+
+            if (c == '\n')
+            {
+                nextLine = true;
+            }
 
             if (TokenTools.IsWhitespace(c))
             {
@@ -23,7 +50,10 @@ public static class Tokenizer
                     continue;
 
                 if (!ParseWordBuffer(buffer, out token) && !ParseTokenBuffer(buffer, out possibleTokens, out token))
-                    throw new Exception($"Unexpected token {new string([.. buffer])}");
+                {
+                    AppendError($"Unexpected token {new string([.. buffer])}");
+                    return false;
+                }
 
                 tokens.Add(token);
                 buffer.Clear();
@@ -44,7 +74,8 @@ public static class Tokenizer
             {
                 if (!ParseWordBuffer(prevBuffer, out var wordToken))
                 {
-                    throw new Exception($"Unexpected token {new string([.. prevBuffer])}");
+                    AppendError($"Unexpected token {new string([.. prevBuffer])}");
+                    return false;
                 }
 
                 tokens.Add(wordToken);
@@ -54,14 +85,21 @@ public static class Tokenizer
             }
             else if (tokenMode)
             {
-                throw new Exception($"Unknown token {new string([.. prevBuffer])}");
+                AppendError($"Unknown token {new string([.. prevBuffer])}");
+                return false;
             }
         }
 
-        return tokens;
+        return true;
     }
 
-    private static bool ParseWordBuffer(IEnumerable<char> buffer, [NotNullWhen(true)] out Token? token)
+    private void AppendError(string error)
+    {
+        TokenizerError err = new(_currentFile, error, _currentLine, _currentColumn);
+        _errors.Add(err);
+    }
+
+    private bool ParseWordBuffer(IEnumerable<char> buffer, [NotNullWhen(true)] out Token? token)
     {
         token = null;
         if (!buffer.Any() || buffer.Any(c => !TokenTools.IsWordChar(c) && !TokenTools.IsNumberChar(c)))
@@ -80,12 +118,12 @@ public static class Tokenizer
             }
             else if (TokenTools.IsNumberChar(wordText[1]))
             {
-                
+
             }
         }
     }
 
-    private static bool ParseTokenBuffer(IEnumerable<char> buffer, out List<Token> possibleTokens, [NotNullWhen(true)] out Token? token)
+    private bool ParseTokenBuffer(IEnumerable<char> buffer, out List<Token> possibleTokens, [NotNullWhen(true)] out Token? token)
     {
         possibleTokens = [];
         string bufferText = new([.. buffer]);
@@ -105,5 +143,68 @@ public static class Tokenizer
 
         token = null;
         return false;
+    }
+
+    private bool IsValidNumber(string word, out TokenType numberType)
+    {
+        numberType = TokenType.NumberDecimal;
+
+        if (word.Length > 1 && word.Last() == 'f')
+        {
+            numberType = TokenType.NumberFloating;
+            word = word[..^1];
+        }
+
+        if (word.Length == 1 && TokenTools.IsNumberChar(word.Single()))
+            return true;
+
+        char sndChar = word[1];
+
+        if (!TokenTools.IsNumberChar(sndChar))
+        {
+            if (word.Length <= 2)
+            {
+                AppendError($"'{word}' is not a valid number");
+                return false;
+            }
+
+            if (!TokenTools.IsNumberBaseChar(sndChar, out var numberTokenType))
+            {
+                AppendError($"'{word}' is not a valid number");
+                return false;
+            }
+
+            string afterBaseDigits = word[2..];
+
+            switch (numberTokenType)
+            {
+                case TokenType.NumberBinary:
+                    if (!afterBaseDigits.All(TokenTools.IsBinaryNumberChar))
+                    {
+                        AppendError($"'{word}' is not a valid binary number");
+                        return false;
+                    }
+                    break;
+                case TokenType.NumberHex:
+                    if (!afterBaseDigits.All(TokenTools.IsHexNumberChar))
+                    {
+                        AppendError($"'{word}' is not a valid hex number");
+                        return false;
+                    }
+                    break;
+            }
+
+            numberType = numberTokenType;
+            return true;
+        }
+
+        bool floatSeparator = false;
+        for (int i = 0; i < word.Length; i++)
+        {
+            char digit = word[i];
+            if (digit == '.')
+            {
+            }
+        }
     }
 }

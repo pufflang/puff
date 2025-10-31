@@ -10,14 +10,14 @@
         "projectUniqueName": "C:\\repos\\puff\\lang\\Puff.Lang\\Puff.Lang.csproj",
         "projectName": "Puff.Lang",
         "projectPath": "C:\\repos\\puff\\lang\\Puff.Lang\\Puff.Lang.csproj",
-        "packagesPath": "C:\\Users\\Dan Mitreanu\\.nuget\\packages\\",
+        "packagesPath": "C:\\Users\\Dan-MMitreanu\\.nuget\\packages\\",
         "outputPath": "C:\\repos\\puff\\lang\\Puff.Lang\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
         ],
         "configFilePaths": [
-          "C:\\Users\\Dan Mitreanu\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\Dan-MMitreanu\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
@@ -72,7 +72,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.306/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.305/PortableRuntimeIdentifierGraph.json"
         }
       }
     }
